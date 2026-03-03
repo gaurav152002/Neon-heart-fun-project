@@ -3,116 +3,157 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For My Kunjizzz</title>
+<title>Neon Heart Creation</title>
 
 <style>
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-body{
-  height:100vh;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  overflow:hidden;
-  background:linear-gradient(-45deg,#000,#140016,#000,#1a0020);
-  background-size:400% 400%;
-  animation:bgMove 20s linear infinite; /* Slower for smoothness */
-  font-family:'Segoe UI',sans-serif;
-  position:relative;
+body {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background: #120012; /* solid instead of heavy gradient animation */
+  font-family: 'Segoe UI', sans-serif;
+  position: relative;
 }
 
-/* Smooth background */
-@keyframes bgMove{
-  0%{background-position:0% 50%;}
-  50%{background-position:100% 50%;}
-  100%{background-position:0% 50%;}
+/* ---------- TEXT ---------- */
+
+.message {
+  position: absolute;
+  top: 5%;
+  font-size: 5vmin;
+  font-weight: 800;
+  letter-spacing: 6px;
+  color: #ff2ebd;
+  opacity: 0;
+  text-shadow: 0 0 15px #ff2ebd; /* single glow layer */
+  animation: showText 2s ease forwards;
+  animation-delay: 0.5s;
+  z-index: 2;
 }
 
-/* ---------------- TEXT ---------------- */
-
-.message{
-  position:absolute;
-  top:6%;
-  font-size:5vmin;
-  font-weight:800;
-  letter-spacing:6px;
-  color:#ff2ebd;
-  opacity:0;
-  text-shadow:0 0 15px #ff2ebd; /* Reduced glow */
-  animation:showText 2s ease forwards;
-  animation-delay:0.5s; /* Text first */
-  z-index:2;
-}
-
-@keyframes showText{
-  to{
-    opacity:1;
-    transform:translateY(-8px);
+@keyframes showText {
+  to {
+    opacity: 1;
+    transform: translateY(-10px);
   }
 }
 
-/* ---------------- HEART ---------------- */
+/* ---------- STAR SHOWER ---------- */
 
-.heart-loader{
-  width:60vmin;
-  height:60vmin;
+.star {
+  position: absolute;
+  width: 2px;
+  height: 16px;
+  background: linear-gradient(transparent, #ff2ebd);
+  opacity: 0;
+  animation: fall linear forwards;
+  pointer-events: none;
+  will-change: transform;
 }
 
-.heart-loader__group{
-  transform-origin:0 90px;
-  animation:group-anim 7s 2.5s infinite; /* delayed */
+@keyframes fall {
+  0% { transform: translateY(-100vh); opacity: 0; }
+  10% { opacity: 1; }
+  100% { transform: translateY(100vh); opacity: 0; }
 }
 
-.heart-loader__heartPath{
-  stroke:#ff2ebd;
-  stroke-width:4;
-  fill:transparent;
-  stroke-dasharray:308.522;
-  stroke-dashoffset:308.522;
-  filter:drop-shadow(0 0 15px #ff2ebd); /* Reduced shadow */
-  animation:heart-anim 7s 2.5s infinite;
-  will-change:transform;
+/* ---------- HEART LOADER ---------- */
+
+.heart-loader {
+  width: 60vmin;
+  height: 60vmin;
+  overflow: visible;
 }
 
-/* Animations */
-
-@keyframes group-anim{
-  43%{transform:rotate(0);}
-  54%{transform:rotate(-45deg);}
-  90%{opacity:1;}
-  97%{opacity:0;}
-  100%{opacity:0;}
+.heart-loader__group {
+  transform-origin: 0 90px;
+  animation: group-anim 7s 2.5s infinite;
 }
 
-@keyframes heart-anim{
-  55%{stroke-dashoffset:308.522;fill:transparent;}
-  70%{stroke-dashoffset:0;}
-  87%{fill:#ff2ebd;}
-  100%{fill:#ff2ebd;}
+.heart-loader__square {
+  stroke: rgba(255, 20, 147, 0.3);
+  stroke-width: 2;
+  fill: none;
+  stroke-dasharray: 240;
+  stroke-dashoffset: 240;
+  animation: square-anim 7s 2.5s infinite;
 }
 
-/* ---------------- STAR SHOWER ---------------- */
-
-.star{
-  position:absolute;
-  width:2px;
-  height:14px;
-  background:linear-gradient(transparent,#ff2ebd);
-  opacity:0;
-  animation:fall linear forwards;
-  pointer-events:none;
-  will-change:transform;
+.heart-loader__circle {
+  stroke: rgba(255, 20, 147, 0.3);
+  stroke-width: 2;
+  fill: none;
+  stroke-dasharray: 188.522;
+  stroke-dashoffset: 188.522;
+  transform-origin: 60px 30px;
 }
 
-@keyframes fall{
-  0%{transform:translateY(-100vh);opacity:0;}
-  10%{opacity:1;}
-  100%{transform:translateY(100vh);opacity:0;}
+.heart-loader__circle.m--left {
+  animation: left-circle-anim 7s 2.5s infinite;
+}
+
+.heart-loader__circle.m--right {
+  animation: right-circle-anim 7s 2.5s infinite;
+}
+
+.heart-loader__heartPath {
+  stroke: #ff2ebd;
+  stroke-width: 4;
+  fill: transparent;
+  stroke-dasharray: 308.522;
+  stroke-dashoffset: 308.522;
+  filter: drop-shadow(0 0 15px #ff2ebd); /* reduced glow */
+  animation: heart-anim 7s 2.5s infinite;
+  will-change: transform;
+}
+
+/* ---------- ANIMATIONS (UNCHANGED) ---------- */
+
+@keyframes square-anim {
+  12% { stroke-dashoffset: 0; }
+  43% { opacity: 1; }
+  85% { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+@keyframes left-circle-anim {
+  12% { stroke-dashoffset: 188.522; }
+  31% { stroke-dashoffset: 0; transform: translateY(0); }
+  41% { transform: translateY(-30px); }
+  85% { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+@keyframes right-circle-anim {
+  12% { stroke-dashoffset: 188.522; }
+  31% { stroke-dashoffset: 0; transform: translateX(0); }
+  41% { transform: translateX(30px); }
+  85% { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+@keyframes group-anim {
+  43% { transform: rotate(0); }
+  54% { transform: rotate(-45deg); }
+  90% { opacity: 1; }
+  97% { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+@keyframes heart-anim {
+  55% { stroke-dashoffset: 308.522; fill: transparent; }
+  70% { stroke-dashoffset: 0; }
+  87% { fill: #ff2ebd; }
+  100% { fill: #ff2ebd; }
 }
 
 </style>
@@ -124,26 +165,24 @@ body{
 
 <svg class="heart-loader" viewBox="0 0 90 90">
   <g class="heart-loader__group">
+    <path class="heart-loader__square" d="M0,30 0,90 60,90 60,30z"/>
+    <path class="heart-loader__circle m--left" d="M60,60 a30,30 0 0,1 -60,0 a30,30 0 0,1 60,0"/>
+    <path class="heart-loader__circle m--right" d="M60,60 a30,30 0 0,1 -60,0 a30,30 0 0,1 60,0"/>
     <path class="heart-loader__heartPath"
-      d="M60,30 a30,30 0 0,1 0,60 L0,90 0,30 a30,30 0 0,1 60,0" />
+          d="M60,30 a30,30 0 0,1 0,60 L0,90 0,30 a30,30 0 0,1 60,0" />
   </g>
 </svg>
 
 <script>
-
-/* Optimized star shower (reduced density for smooth FPS) */
-function createStar(){
-  const star=document.createElement("div");
+function createStar() {
+  const star = document.createElement("div");
   star.classList.add("star");
-  star.style.left=Math.random()*window.innerWidth+"px";
-  star.style.animationDuration=(Math.random()*2+2)+"s";
+  star.style.left = Math.random() * window.innerWidth + "px";
+  star.style.animationDuration = (Math.random() * 2 + 1.5) + "s";
   document.body.appendChild(star);
-  setTimeout(()=>star.remove(),4000);
+  setTimeout(() => star.remove(), 3000);
 }
-
-/* Reduced frequency for mobile smoothness */
-setInterval(createStar,120);
-
+setInterval(createStar, 80); /* slightly reduced for smoother FPS */
 </script>
 
 </body>
