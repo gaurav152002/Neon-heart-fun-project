@@ -1,11 +1,8 @@
+# Terraform
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
 
-# Terraform state files
-terraform/*.tfstate
-terraform/*.tfstate.backup
-terraform/.terraform/
-
-# Sensitive variables
-terraform/terraform.tfvars
-
-# Terraform lock file
-terraform/.terraform.lock.hcl
+# Sensitive
+*.tfvars
