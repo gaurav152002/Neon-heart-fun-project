@@ -1,318 +1,256 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Candle Fun</title>
-  <style>
-    /* General Styling */
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #FFF;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      overflow: hidden;
-      transition: background 0.5s;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YOU & ME - The Lean In</title>
+    <style>
+        *, *:before, *:after { box-sizing: border-box; }
 
-    /* Welcome Screen Styling */
-    #welcome-screen {
-      text-align: center;
-      z-index: 100;
-    }
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #e37254;
+            overflow: hidden;
+            font-family: 'Arial Black', sans-serif;
+            transition: background-color 1s ease;
+        }
 
-    h1 {
-      color: #673C63;
-      margin-bottom: 20px;
-      font-size: 1.8rem;
-    }
+        .top-label {
+            position: absolute;
+            top: 5%;
+            width: 100%;
+            text-align: center;
+            z-index: 10;
+            color: white;
+            font-size: clamp(1.8rem, 10vw, 3.5rem);
+            letter-spacing: 8px;
+            text-shadow: 3px 3px 15px rgba(0,0,0,0.3);
+            pointer-events: none;
+        }
 
-    .btn {
-      padding: 15px 30px;
-      background-color: #673C63;
-      color: white;
-      border: none;
-      border-radius: 50px;
-      cursor: pointer;
-      font-size: 1rem;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-      transition: transform 0.2s, background 0.2s;
-    }
+        .container {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
 
-    .btn:hover {
-      transform: scale(1.05);
-      background-color: #4a2b47;
-    }
+        #couple {
+            max-height: 100%;
+            width: 100%;
+            z-index: 2;
+        }
 
-    /* Animation Container (Hidden by default) */
-    #animation-container {
-      display: none;
-      width: 100%;
-      height: 100%;
-      position: relative;
-    }
+        .heart-particle {
+            position: absolute;
+            top: -20px;
+            z-index: 1;
+            user-select: none;
+            pointer-events: none;
+            animation: fall linear forwards;
+        }
 
-    .instruction-text {
-      position: absolute;
-      top: 20%;
-      left: 50%;
-      transform: translateX(-50%);
-      color: #673C63;
-      font-weight: bold;
-      text-align: center;
-      pointer-events: none;
-    }
+        @keyframes fall {
+            to { transform: translateY(110vh) rotate(360deg); }
+        }
 
-    /* --- ORIGINAL CANDLE CSS --- */
-    .body-bg-active {
-      animation: change-background 3s infinite linear;
-    }
+        .st0{fill:#F8E5C5;}
+        .st1{fill:#F0B38A;}
+        .st2{fill:#660000;}
+        .st3{fill:#161C1D;}
+        .st4{fill:#EB1D23;}
 
-    .wrapper {
-      position: absolute;
-      left: 50%;
-      top: 70%;
-      transform: scale(1.5, 1.5) translate(-50%, -50%);
-    }
-
-    .floor {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      width: 350px;
-      height: 5px;
-      background: #673C63;
-      transform: translate(-50%, -50%);
-      box-shadow: 0px 2px 5px #111;
-      z-index: 2;
-    }
-
-    .candles {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      width: 250px;
-      height: 150px;
-      transform: translate(-50%, -100%);
-      z-index: 1;
-    }
-
-    .candle1 {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      width: 35px;
-      height: 100px;
-      background: #fff;
-      border: 3px solid #673C63;
-      border-bottom: 0px;
-      border-radius: 3px;
-      transform-origin: center right;
-      transform: translate(60%, -25%);
-      box-shadow: -2px 0px 0px #95c6f2 inset;
-      animation: expand-body 3s infinite linear;
-    }
-
-    .candle1__stick, .candle2__stick {
-      position: absolute;
-      left: 50%;
-      top: 0%;
-      width: 3px;
-      height: 15px;
-      background: #673C63;
-      border-radius: 8px;
-      transform: translate(-50%, -100%);
-    }
-
-    .candle2__stick {
-      height: 12px;
-      transform-origin: bottom center;
-      animation: stick-animation 3s infinite linear;
-    }
-
-    .candle1__eyes-one, .candle1__eyes-two {
-      position: absolute;
-      width: 5px;
-      height: 5px;
-      border-radius: 100%;
-      background: #673C63;
-      top: 20%;
-      animation: blink-eyes 3s infinite linear;
-    }
-    .candle1__eyes-one { left: 30%; transform: translate(-70%, 0%); }
-    .candle1__eyes-two { left: 70%; transform: translate(-70%, 0%); }
-
-    .candle1__mouth {
-      position: absolute;
-      left: 40%;
-      top: 20%;
-      width: 0px;
-      height: 0px;
-      border-radius: 20px;
-      background: #673C63;
-      transform: translate(-50%, -50%);
-      animation: uff 3s infinite linear;
-    }
-
-    .candle__smoke-one {
-      position: absolute;
-      left: 30%;
-      top: 50%;
-      width: 30px;
-      height: 3px;
-      background: grey;
-      transform: translate(-50%, -50%);
-      animation: move-left 3s infinite linear;
-    }
-
-    .candle__smoke-two {
-      position: absolute;
-      left: 30%;
-      top: 40%;
-      width: 10px;
-      height: 10px;
-      border-radius: 10px;
-      background: grey;
-      transform: translate(-50%, -50%);
-      animation: move-top 3s infinite linear;
-    }
-
-    .candle2 {
-      position: absolute;
-      left: 20%;
-      top: 65%;
-      width: 42px;
-      height: 60px;
-      background: #fff;
-      border: 3px solid #673C63;
-      border-bottom: 0px;
-      border-radius: 3px;
-      transform: translate(60%, -15%);
-      transform-origin: center right;
-      box-shadow: -2px 0px 0px #95c6f2 inset;
-      animation: shake-left 3s infinite linear;
-    }
-
-    .candle2__eyes-one, .candle2__eyes-two {
-      position: absolute;
-      width: 5px;
-      height: 5px;
-      background: #673C63;
-      top: 50%;
-    }
-    .candle2__eyes-one { left: 30%; animation: changeto-lower 3s infinite linear; }
-    .candle2__eyes-two { left: 70%; animation: changeto-greater 3s infinite linear; }
-
-    .light__wave {
-      position: absolute;
-      top: 35%;
-      left: 35%;
-      width: 75px;
-      height: 75px;
-      border-radius: 100%;
-      z-index: 0;
-      transform: translate(-25%, -50%) scale(2.5, 2.5);
-      border: 2px solid rgba(255, 255, 255, 0.2);
-      animation: expand-light 3s infinite linear;
-    }
-
-    .candle2__fire {
-      position: absolute;
-      top: 50%;
-      left: 40%;
-      display: block;
-      width: 16px;
-      height: 20px;
-      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-      background: #FF9800;
-      transform: translate(-50%, -50%);
-      animation: dance-fire 3s infinite linear;
-      cursor: pointer;
-    }
-
-    /* Keyframes (Kept from your original) */
-    @keyframes blink-eyes { 0%,35% { opacity: 1; } 36%,39% { opacity: 0; } 40% { opacity: 1; } 50%,65% { transform: translate(-140%, 0%); } 66% { transform: translate(-70%, 0%); } }
-    @keyframes expand-body { 0%,40% { transform: scale(1, 1) translate(60%, -25%); } 45%,55% { transform: scale(1.1, 1.1) translate(60%, -28%); } 60% { transform: scale(0.89, 0.89) translate(60%, -25%); } 65%, 75% { transform: scale(1, 1) translate(60%, -25%); } }
-    @keyframes uff { 0%,40% { width: 0px; height: 0px; } 50%,54% { width: 15px; height: 15px; left: 30%; } 59% { width: 5px; height: 5px; left: 20%; } 67% { width: 0px; height: 0px; left: 30%; } }
-    @keyframes change-background { 0%,59%,98%,100% { background: #FFF; } 61%,97% { background: #000; } }
-    @keyframes move-left { 0%,59%,100% { width: 0px; left: 40%; } 60% { width: 30px; left: 30%; } 68% { width: 0px; left: 20%; } }
-    @keyframes move-top { 0%,64%,100% { width: 0px; height: 0px; top: 0%; } 65% { width: 10px; height: 10px; top: 40%; left: 40%; } 80% { width: 0px; height: 0px; top: 20%; } }
-    @keyframes expand-light { 10%,29%,59%,89% { transform: translate(-25%, -50%) scale(0, 0); border: 2px solid rgba(255, 255, 255, 0); } 90%,20%,50% { transform: translate(-25%, -50%) scale(1, 1); } 95%,27%,57% { transform: translate(-25%, -50%) scale(2, 2); border: 2px solid rgba(255, 255, 255, 0.5); } 0%,28%,58%,100% { transform: translate(-25%, -50%) scale(2.5, 2.5); border: 2px solid rgba(255, 255, 255, 0.2); } }
-    @keyframes dance-fire { 59%,89% { left: 40%; width: 0px; height: 0px; } 90%,0%,7%,15%,23%,31%,39%,47%,55% { left: 40.8%; width: 16px; height: 20px; background: #FFC107; } 94%,3%,11%,19%,27%,35%,43%,51%,58% { left: 41.2%; width: 16px; height: 20px; background: #FF9800; } }
-    @keyframes shake-left { 0%,59% { left: 20%; transform: translate(60%, -15%); } 62% { left: 18%; } 65% { left: 21%; } 67% { left: 20%; } 75% { transform: scale(1.15, 0.85) translate(60%, -15%); background: #fff; } 91% { transform: scale(1.18, 0.82) translate(60%, -10%); background: #F44336; border-color: #F44336; } 97% { transform: scale(1, 1) translate(60%, -15%); } }
-    @keyframes changeto-lower { 0%,70%,90% { border-radius: 100%; background: #673C63; transform: translate(-90%, 0%); } 71%,89% { background: none; border: solid #673C63; border-width: 0 2px 2px 0; padding: 1px; transform: rotate(-45deg) translate(-50%, -65%); } }
-    @keyframes changeto-greater { 0%,70%,90% { top: 50%; border-radius: 100%; background: #673C63; transform: translate(-80%, 0%); } 71%,89% { top: 30%; background: none; border: solid #673C63; border-width: 0 2px 2px 0; padding: 1px; transform: rotate(135deg) translate(-80%, 20%); } }
-    @keyframes stick-animation { 0%,59% { transform: translate(-50%, -100%); } 62% { transform: rotateZ(-15deg) translate(-50%, -100%); } 65% { transform: rotateZ(15deg) translate(-50%, -100%); } 70% { transform: rotateZ(-5deg) translate(-50%, -100%); } 85% { transform: rotateZ(180deg) translate(0%, 120%); } 92% { transform: translate(-50%, -100%); } }
-  </style>
+        #girl-hair { fill: url(#hair-gradient); }
+        #girl-eye { fill: green; }
+        #girl-earring { fill: #8d8d8d; }
+        #girl-skirt, #girl-shirt { fill: #791e43; }
+        #boy-pants { fill: #848487; }
+        #boy-sleeve { fill: #b8bcbb; }
+        #boy-shirt { fill: #256e89; }
+        #boy-hat-1 { fill: #2e6773; }
+        #boy-hat-2 { fill: #4f3723; }
+        
+        #couple, #heart, #triangle-light { visibility: hidden; }
+        #triangle-light { fill: url(#light-gradient); fill-opacity: 0.3; }
+        #ground { fill: #5c5757; }
+    </style>
 </head>
-<body id="main-body">
+<body>
 
-  <div id="welcome-screen">
-    <h1>officeil pani onum ile moneiiiii??</h1>
-    <button class="btn" onclick="startAnimation()">Onu njeki nokuuu</button>
-  </div>
-
-  <div id="animation-container">
-    <div class="instruction-text">
-      <p>Now, click on the flame! 🔥</p>
+    <div class="top-label">YOU & ME</div>
+    <div class="container" id="main-container">
+        <svg id="couple" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="150 100 900 900">
+            <defs>
+                <linearGradient id="hair-gradient">
+                    <stop offset="0%" stop-color="#5e3634" />
+                    <stop offset="50%" stop-color="#dfc57b" />
+                </linearGradient>
+                <linearGradient id="light-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="10%" stop-color="rgb(120,175,120)" />
+                    <stop offset="60%" stop-color="#1a2124" />
+                </linearGradient>
+            </defs>
+            <g>
+                <path id="heart" class="st0" d="M626.6,310.7c-20.1-35-58.8-12.9-70.8,4.6c-11.7-17.5-50.7-39.6-70.8-4.6
+                    c-26.2,45.9,36.6,83.2,70.2,102c0.2,0,1,0.2,1.2,0C590.1,393.8,653,356.6,626.6,310.7L626.6,310.7z"/>
+                <path id="ground" class="st0" d="M604,886.9c-234.9,0-425,17-425,38.3c0,21.1,190.3,38.1,425,38.1c235,0,425.4-17,425.4-38.1
+                    C1029.4,903.9,839.2,886.9,604,886.9L604,886.9z"/>
+                
+                <g id="girl">
+                    <g id="girl-leg-1">
+                        <polygon class="st1" points="698.6,810.7 817.1,839.3 820,833 705.1,788.9"/>
+                        <polygon class="st2" points="819.3,876.7 808.5,841.1 812.5,827 832.3,833"/>
+                    </g>
+                    <g id="girl-leg-2">
+                        <polygon class="st1" points="690.8,801.3 713.6,921.1 720.5,921.1 713.2,798.3"/>
+                        <polygon class="st2" points="679.9,931.5 711,910.9 725.5,910.9 725.5,931.5"/>
+                    </g>
+                    <g id="girl-body">
+                        <path id="girl-shirt" class="st0" d="M638,572.4c0,0-47.6,31.5,24,117.4l41-12.3L667.3,588l-9.7-21.6L638,572.4z"/>
+                        <path id="girl-skirt" class="st0" d="M667.3,666.5c-70.9,27.4-52.2,153.8-52.2,153.8s71.9,19.6,188.3-57
+                            C803.4,763.2,748.3,635.2,667.3,666.5L667.3,666.5z"/>
+                        <path id="girl-arm" class="st1" d="M609.1,652.2c0,0,42.7-48.8,49.7-42.7c7.3,6.5-38.6,52-38.6,52h-76.5L609.1,652.2z"/>
+                        <g id="girl-head">
+                            <path id="girl-face" class="st1" d="M695.4,509.5c-2-27.6-35.9-47.4-75.5-44.6c-39.6,3.1-70.1,27.7-68,55.1c2,27.6,35.7,47.5,75.3,44.6
+                            C667,561.7,697.4,537,695.4,509.5L695.4,509.5z"/>
+                            <path id="girl-eye" class="st3" d="M579.7,507.6c-4.6,0.3-8,4.4-7.7,9c0.3,4.6,4.2,8.2,8.8,7.8c4.8-0.3,8.2-4.4,7.8-9
+                            C588.4,510.8,584.3,507.3,579.7,507.6L579.7,507.6z"/>
+                            <path id="girl-hair" class="st3" d="M561.8,491.5c0,0,25.8,24.7,76.2,33.5c18.5,32.6,57.5,136.6,57.5,136.6
+                            s41.2,39.8,78.4-1.9c-11.2-4.4-47.4-6.3-61.4-44.4c-13.9-38.3,6.6-90-13.3-125.5c-11.6-20.9-35.4-44.2-75.7-39.4
+                            C591.8,453.9,576.1,468.7,561.8,491.5L561.8,491.5z"/>
+                            <path id="girl-earring" class="st4" d="M646.9,525c0,4.8-3.9,8.7-8.8,8.7c-4.8,0-8.7-3.9-8.7-8.7s3.9-8.7,8.7-8.7C643,516.3,646.9,520.2,646.9,525
+                            L646.9,525z"/>
+                        </g>
+                        <polygon class="st1" points="635.2,561.5 642.6,577.5 659.8,569.5 651.1,550.6"/>
+                    </g>
+                </g>
+                <g id="boy">
+                    <polygon class="st2" points="481.6,901.5 498.9,901.5 500.8,901.5 500.6,903.2 532.6,925.5 480.4,925.5 480.4,901.5"/>
+                    <rect x="474.8" y="565.8" class="st1" width="16.8" height="13.3"/>
+                    <polygon class="st1" points="504.4,587.7 484.6,582.8 433.4,643.9 484.6,691.6 453.3,642.2"/>
+                    <path class="st1" d="M478.7,461.9c-41.3,0-75,24-75,53.6c0,29.6,33.7,53.6,75,53.6c41.5,0,75.2-24,75.2-53.6
+                        C553.9,485.8,520.2,461.9,478.7,461.9L478.7,461.9z"/>
+                    <path id="boy-eye" class="st3" d="M534.1,503.4c-4.1,0-7.3,3.4-7.3,7.3c0,3.9,3.2,7.1,7.3,7.1c3.9,0,7.1-3.2,7.1-7.1
+                        C541.3,506.8,538,503.4,534.1,503.4L534.1,503.4z"/>
+                    <path class="st3" d="M526.8,473.1c0,0-3.2,30.4-57.8,46.6c0,10.5-0.8,48.1-0.8,48.1h-64.5c0,0-26.2-76,41.3-101.4
+                        C463.4,461.9,489.6,454.9,526.8,473.1L526.8,473.1z"/>
+                    <path id="boy-hat-2" class="st2" d="M379.9,516.6c7.1,12.6,44.9,4.9,81.8-16.3c34.2-20.4,52.7-45.9,43.7-58
+                        c-8.7-11.9-40-6.5-72.5,13.4C397.9,476.3,373.1,504,379.9,516.6L379.9,516.6z"/>
+                    <path id="boy-hat-1" class="st0" d="M471.2,443.3c-5.1-4.6-13.6-12.2-20.1-11.6c-11.7,1.4-28.2,10-28.2,10s-17.9,9.4-24.1,17.5
+                        c-4.3,5.1-2.9,16.2-2.2,23c0.8,7,4.2,16.8,4.2,16.8c64.5-4.6,81.8-42.7,81.8-42.7S476.5,447.9,471.2,443.3L471.2,443.3z"/>
+                    <polygon id="boy-pants" class="st0" points="461.5,704.9 481.6,901.5 498.9,901.5 523.2,704.9"/>
+                    <polygon id="boy-shirt" class="st2" points="492.8,576 477.1,576 469.2,576 469.2,579 469.2,605.1 461.5,706.1 523.8,706.1 509.8,576 508.3,576"/>
+                    <g id="boy-arm-group">
+                        <polygon id="boy-arm-flesh" class="st1" points="474.6,598.3 514.7,662.4 602.3,667.3 519.8,645.9 490.1,581.6"/>
+                        <polygon id="boy-sleeve" class="st0" points="469.2,594.9 489.7,626.2 513.9,610.3 493.3,579"/>
+                    </g>
+                    <path class="st1" d="M480.4,491.6c-6.3,0-11.6,9.7-11.6,21.4c0,11.9,5.3,21.6,11.6,21.6c6.5,0,11.6-9.7,11.6-21.6
+                        C491.9,501.3,486.8,491.6,480.4,491.6L480.4,491.6z"/>
+                </g>
+            </g>
+            <polygon id="triangle-light" class="st5" points="1265.8,1383.2 542.5,0 0,1383.2 "/>
+        </svg>
     </div>
-    
-    <div class="wrapper">
-      <div class="candles">
-        <div class="light__wave"></div>
-        <div class="candle1">
-          <div class="candle1__body">
-            <div class="candle1__eyes">
-              <span class="candle1__eyes-one"></span>
-              <span class="candle1__eyes-two"></span>
-            </div>
-            <div class="candle1__mouth"></div>
-          </div>
-          <div class="candle1__stick"></div>
-        </div>
-        
-        <div class="candle2">
-          <div class="candle2__body">
-            <div class="candle2__eyes">
-              <div class="candle2__eyes-one"></div>
-              <div class="candle2__eyes-two"></div>
-            </div>
-          </div>
-          <div class="candle2__stick"></div>
-        </div>
-        
-        <div class="candle2__fire" onclick="toggleBackground()"></div>
-        
-        <div class="candle__smoke-one"></div>
-        <div class="candle__smoke-two"></div>
-      </div>
-      <div class="floor"></div>
-    </div>
-  </div>
 
-  <script>
-    function startAnimation() {
-      // Hide welcome screen
-      document.getElementById('welcome-screen').style.display = 'none';
-      // Show animation
-      document.getElementById('animation-container').style.display = 'block';
-      // Start background animation
-      document.getElementById('main-body').classList.add('body-bg-active');
-    }
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script>
+        const heartContainer = document.getElementById('main-container');
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart-particle');
+            heart.innerHTML = Math.random() > 0.5 ? '❤️' : '💖';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            heart.style.opacity = Math.random() * 0.5 + 0.3;
+            heartContainer.appendChild(heart);
+            setTimeout(() => heart.remove(), 5000);
+        }
+        setInterval(createHeart, 400);
 
-    function toggleBackground() {
-      const body = document.getElementById('main-body');
-      if (body.classList.contains('body-bg-active')) {
-        body.classList.remove('body-bg-active');
-        body.style.backgroundColor = '#FFF'; // Force white if stopped
-      } else {
-        body.classList.add('body-bg-active');
-      }
-    }
-  </script>
+        var master = gsap.timeline({ repeat: -1 }); 
+        var couple = document.querySelector('#couple');
+        var girl = document.querySelector('#girl');
+        var boy = document.querySelector('#boy');
+        var heart = document.querySelector('#heart');
+        var ground = document.querySelector('#ground');
+        var background = document.body;
+        var light = document.querySelector('#triangle-light');
+
+        master
+          .add(setup())
+          .add(darkness(), 'lightsOff+=1')
+          .add(boyKiss(), 'boyStuff+=0.2')
+          .add(girlStuff(), 'boyStuff+=2')
+          .add(heartStuff(), 'heartStuff-=1')
+          .add(lightsOn(), 'heartStuff+=1')
+          .add(backToStart(),'lightsOn+=1' )
+
+        function setup() {
+          var tl = gsap.timeline()
+            .set(couple, { autoAlpha: 1 })
+            .set(boy.querySelector('#boy-arm-group'), { transformOrigin: '0% 10%', rotation: "+=40" })
+            .set(girl.querySelector('#girl-earring'), { scaleY: '0.7' })
+            .set(girl.querySelector('#girl-leg-1'), { rotation: '+=75' })
+            .set(girl.querySelector('#girl-arm'), { transformOrigin: '100% 0%', rotation: '-=60' })
+            .set(girl.querySelector('#girl-body'), { transformOrigin: '0% 75%', rotation: '+=20' })
+            .set(heart, { transformOrigin: '50% 50%', y: '+=100', scale: 0.5 });
+          return tl;
+        }
+
+        function darkness() {
+          var tl = gsap.timeline()
+            .to(background, { duration: 1, backgroundColor: '#241a22' })
+            .to(girl.querySelector('#girl-arm'), { duration: 0.5, rotation: 0 }, 1)
+          return tl;
+        }
+
+        function boyKiss() {
+          var tl = gsap.timeline()
+            // Deep lean - boy moves closer and rotates more to "touch" faces
+            .to(boy, { duration: 1.5, transformOrigin: '50% 100%', rotation: '+=12', x: '+=45', ease: "power1.inOut" }, 0)
+            .to(boy.querySelector('#boy-arm-group'), { duration: 1, rotation: -10, ease: "power1.inOut" }, 0)
+            .to(boy.querySelector('#boy-eye'), { duration: 0.5, transformOrigin: '0% 50%', scaleY: 0.1 }, 0.5);
+          return tl;
+        }
+
+        function girlStuff() {
+          var tl = gsap.timeline()
+          .to(girl.querySelector('#girl-eye'), { duration: 0.5, transformOrigin: '0% 50%', scaleY: 0.1 });
+          return tl;
+        }
+
+        function heartStuff() {
+          var tl = gsap.timeline()
+          .to('#heart', { duration: 3, autoAlpha: 1, y: 0, scale: 1, ease: "elastic.out(1,0.3)" });
+          return tl;
+        }
+
+        function lightsOn() {
+          var tl = gsap.timeline()
+            .to(light, { duration: 0.25, autoAlpha: 1 }, 0)
+            .to(ground, { duration: 0.25, fill: '#F8E5C5' }, 0)  
+            .to(girl.querySelector('#girl-eye'), { duration: 0.5, scaleY: 1 }, 0.5)
+            .to(boy.querySelector('#boy-eye'), { duration: 0.5, scaleY: 1 }, 1)
+            // Reset boy - rapid pull back after lights go on
+            .to(boy, { duration: 0.5, rotation: 0, x: 0, ease: "back.out(2)" })
+            .to(boy.querySelector('#boy-arm-group'), { duration: 0.5, rotation: "+=40" }, "-=0.5")
+            .to(girl.querySelector('#girl-body'), { duration: 0.5, rotation: '+=20' })
+            .to(girl.querySelector('#girl-leg-1'), { duration: 1, rotation: '+=75' }, "-=0.75")
+            .to(girl.querySelector('#girl-arm'), { duration: 1, rotation: '-=60' }, "-=1.25")
+            .to('#heart', { duration: 1.5, autoAlpha: 0, scale: 0.5, y: -100, ease: "elastic.in(1,0.7)" }, "-=2")
+          return tl;
+        }
+
+        function backToStart() {
+          var tl = gsap.timeline()
+           .to(background, { duration: 1, backgroundColor: '#e37254' })
+           .to(light, { duration: 0.5, autoAlpha: 0 }, '-=1')
+           .to(ground, { duration: 0.25, fill: '#5c5757' }, 0) 
+          return tl;
+        }
+    </script>
 </body>
 </html>
