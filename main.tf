@@ -34,7 +34,7 @@ resource "cloudflare_pages_project" "frontend" {
 
   build_config {
 
-    root_dir = "."
+    root_dir = "terraform"
 
     # Static HTML site → no build command needed
     build_command   = null
